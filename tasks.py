@@ -4,6 +4,8 @@ from pathlib import Path
 
 DATA_FILE = Path("tasks.json")
 
+PRIORITIES = ("high", "low")
+
 
 def load_tasks():
     if not DATA_FILE.exists():
@@ -15,12 +17,15 @@ def save_tasks(tasks):
     DATA_FILE.write_text(json.dumps(tasks, indent=2))
 
 
-def add_task(title):
+def add_task(title, priority="low"):
+    if priority not in PRIORITIES:
+        print(f"Priority must be 'high' or 'low'.")
+        return
     tasks = load_tasks()
-    task = {"id": len(tasks) + 1, "title": title, "done": False}
+    task = {"id": len(tasks) + 1, "title": title, "priority": priority, "done": False}
     tasks.append(task)
     save_tasks(tasks)
-    print(f"Added: [{task['id']}] {title}")
+    print(f"Added: [{task['id']}] {title} ({priority})")
 
 
 def list_tasks():
@@ -30,7 +35,9 @@ def list_tasks():
         return
     for t in tasks:
         status = "x" if t["done"] else " "
-        print(f"[{status}] {t['id']}. {t['title']}")
+        priority = t.get("priority", "low")
+        flag = "!" if priority == "high" else " "
+        print(f"[{status}]{flag} {t['id']}. {t['title']}")
 
 
 def complete_task(task_id):
@@ -66,20 +73,25 @@ def search_tasks(keyword):
 def main():
     args = sys.argv[1:]
     if not args:
-        print("Commands: add | list | done | delete")
+        print("Commands: add | list | done | delete | search")
         return
 
     command = args[0]
     if command == "add" and len(args) > 1:
-        add_task(" ".join(args[1:]))
+        priority = "low"
+        if "--priority" in args:
+            idx = args.index("--priority")
+            priority = args[idx + 1]
+            title = " ".join(args[1:idx])
+        else:
+            title = " ".join(args[1:])
+        add_task(title, priority)
     elif command == "list":
         list_tasks()
     elif command == "done" and len(args) > 1:
         complete_task(int(args[1]))
     elif command == "delete" and len(args) > 1:
         delete_task(int(args[1]))
-    elif command == "search" and len(args) > 1:
-        search_tasks(args[1])
     elif command == "search" and len(args) > 1:
         search_tasks(args[1])
     else:
