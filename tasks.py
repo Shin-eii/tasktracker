@@ -44,6 +44,13 @@ def complete_task(task_id):
     print(f"Task {task_id} not found.")
 
 
+def delete_task(task_id):
+    tasks = load_tasks()
+    tasks = [t for t in tasks if t["id"] != task_id]
+    save_tasks(tasks)
+    print(f"Deleted task {task_id}")
+
+
 def main():
     args = sys.argv[1:]
     if not args:
@@ -57,6 +64,8 @@ def main():
         list_tasks()
     elif command == "done" and len(args) > 1:
         complete_task(int(args[1]))
+    elif command == "delete" and len(args) > 1:
+        delete_task(int(args[1]))
     else:
         print("Unknown command.")
 
