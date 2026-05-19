@@ -51,6 +51,18 @@ def delete_task(task_id):
     print(f"Deleted task {task_id}")
 
 
+def search_tasks(keyword):
+    tasks = load_tasks()
+    found = False
+    for t in tasks:
+        if keyword.lower() in t["title"].lower():
+            status = "x" if t["done"] else " "
+            print(f"[{status}] {t['id']}. {t['title']}")
+            found = True
+    if not found:
+        print(f"No tasks matching '{keyword}'.")
+
+
 def main():
     args = sys.argv[1:]
     if not args:
@@ -66,6 +78,8 @@ def main():
         complete_task(int(args[1]))
     elif command == "delete" and len(args) > 1:
         delete_task(int(args[1]))
+    elif command == "search" and len(args) > 1:
+        search_tasks(args[1])
     else:
         print("Unknown command.")
 
