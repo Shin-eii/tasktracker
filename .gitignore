@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+
+# Data (we don't commit local task data)
+tasks.json
+
+# OS
+.DS_Store
+Thumbs.db
