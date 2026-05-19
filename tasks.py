@@ -80,6 +80,8 @@ def main():
         delete_task(int(args[1]))
     elif command == "search" and len(args) > 1:
         search_tasks(args[1])
+    elif command == "search" and len(args) > 1:
+        search_tasks(args[1])
     else:
         print("Unknown command.")
 
