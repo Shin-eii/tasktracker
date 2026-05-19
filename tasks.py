@@ -54,11 +54,7 @@ def delete_task(task_id):
 def main():
     args = sys.argv[1:]
     if not args:
-<<<<<<< HEAD
         print("Commands: add | list | done | delete")
-=======
-        print("Usage: python tasks.py add <title> | list | done <id> | delete <id>")
->>>>>>> feature/conflict-demo
         return
 
     command = args[0]
